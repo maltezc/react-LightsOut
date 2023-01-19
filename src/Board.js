@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
+import _, { values } from 'lodash';
 import "./Board.css";
 
 /** Game board of Lights out.
@@ -32,17 +33,22 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
-    let initialBoard = [];
-    // TODO: create array-of-arrays of true/false values
-    return initialBoard;
+    // TODO: create array of arrays w/ t/f values.
+    return  new Array(5).fill().map(() =>
+      new Array(5).fill().map(() => {
+        return Math.round(Math.random()) ? false : true;
+      })
+    );
   }
 
+  /** check if all values in board matrix are true. */
   function hasWon() {
     // TODO: check the board in state to determine whether the player has won.
+    return  _.flattenDeep(board).every(true)
   }
 
   function flipCellsAround(coord) {
-    setBoard(oldBoard => {
+    setBoard((oldBoard) => {
       const [y, x] = coord.split("-").map(Number);
 
       const flipCell = (y, x, boardCopy) => {
@@ -54,9 +60,12 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       };
 
       // TODO: Make a (deep) copy of the oldBoard
+      let oldBoardCopy = _.cloneDeep(oldBoard)
 
       // TODO: in the copy, flip this cell and the cells around it
 
+
+      oldBoardCopy.forEach(cell => flipCell(y, x, ))
       // TODO: return the copy
     });
   }
