@@ -34,6 +34,33 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   function createBoard() {
     let initialBoard = [];
     // TODO: create array-of-arrays of true/false values
+
+    function getRandom() {
+      const randomBool = Math.floor(Math.random() * 2);
+      return randomBool === 0 ? false : true;
+    }
+
+    // [...Array(5)].map(e=>~~(getRandom()));
+
+    // [...Array(5)].map(e=>~~(Math.random()*2))
+    for (let index = 0; index < nrows.length; index++) {
+      // const row = [];
+      initialBoard.push([...Array(ncols)].map(e=>~~(Math.random()*2)))
+
+    }
+
+    for (let index = 0; index < nrows.length; index++) {
+      let row = [];
+
+      for (let index = 0; index < ncols.length; index++) {
+        // const col = ncols[index];
+        row.push(getRandom())
+
+      }
+      initialBoard.push(row);
+    }
+
+    // initialBoard = Array(nrows).fill().map(()=>Array(ncols).fill(getRandom()));
     return initialBoard;
   }
 
