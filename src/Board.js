@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
-import _, { values } from "lodash";
+import _ from "lodash";
 import "./Board.css";
 
 /** Game board of Lights out.
@@ -30,13 +30,13 @@ import "./Board.css";
 
 function Board({ nrows = 6, ncols = 7, chanceLightStartsOn = 0.5 }) {
   // default params
-  const [board, setBoard] = useState(createBoard());
+  const [board, setBoard] = useState(createBoard); // never instantiate funct
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
     // // TODO: create array-of-arrays of true/false values
-    return new Array(5).fill().map(() =>
-      new Array(5).fill().map(() => {
+    return new Array(nrows).fill().map(() =>
+      new Array(ncols).fill().map(() => {
         return Math.random() < chanceLightStartsOn;
       })
     );
@@ -45,7 +45,7 @@ function Board({ nrows = 6, ncols = 7, chanceLightStartsOn = 0.5 }) {
   /** check if all values in board matrix are true. */
   function hasWon() {
     // // TODO: check the board in state to determine whether the player has won.
-    return _.flattenDeep(board).every(true);
+    return board.every(row => row.every(cell => !cell));
   }
 
   function flipCellsAround(coord) {
@@ -86,26 +86,27 @@ function Board({ nrows = 6, ncols = 7, chanceLightStartsOn = 0.5 }) {
     return <p>"you have won"</p>;
   }
 
-  let tblBoard = [];
+  let htmlBoard = [];
+
 
   for (let y = 0; y < nrows; y++) {
     let row = [];
     for (let x = 0; x < ncols; x++) {
-      let coord = `${y}-${x}`;
+      let coord = `${y}-${x}`; // sim to cartesian corrdinates, x is still x, y is still y
       row.push(
           <Cell
-              key={coord}
+              key={coord} //need key so react knows which cell you're talking about
               isLit={board[y][x]}
-              flipCellsAroundMe={evt => flipCellsAround(coord)}
+              flipCellsAroundMe={() => flipCellsAround(coord)}
           />,
       );
     }
-    tblBoard.push(<tr key={y}>{row}</tr>);
+    htmlBoard.push(<tr key={y}>{row}</tr>);
   }
 
   return (
       <table className="Board">
-        <tbody>{tblBoard}</tbody>
+        <tbody>{htmlBoard}</tbody>
       </table>
   );
 }
