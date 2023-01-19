@@ -64,10 +64,10 @@ function Board({ nrows = 6, ncols = 7, chanceLightStartsOn = 0.5 }) {
 
       // TODO: in the copy, flip this cell and the cells around it
       // deepBoardCopy.forEach((cell) => flipCell(y, x));
-      let rowAbove = y - 1;
-      let rowBelow = y + 1;
-      let colLeft = x - 1;
-      let colRight = x + 1;
+      // let rowAbove = y - 1;
+      // let rowBelow = y + 1;
+      // let colLeft = x - 1;
+      // let colRight = x + 1;
 
       flipCell(y, x, deepBoardCopy); // flip cell clicked on
       flipCell(y - 1, x, deepBoardCopy); // flip cell above
@@ -86,11 +86,28 @@ function Board({ nrows = 6, ncols = 7, chanceLightStartsOn = 0.5 }) {
     return <p>"you have won"</p>;
   }
 
-  // make table board
-  // TODO
-  return (
+  let tblBoard = [];
 
-  )
+  for (let y = 0; y < nrows; y++) {
+    let row = [];
+    for (let x = 0; x < ncols; x++) {
+      let coord = `${y}-${x}`;
+      row.push(
+          <Cell
+              key={coord}
+              isLit={board[y][x]}
+              flipCellsAroundMe={evt => flipCellsAround(coord)}
+          />,
+      );
+    }
+    tblBoard.push(<tr key={y}>{row}</tr>);
+  }
+
+  return (
+      <table className="Board">
+        <tbody>{tblBoard}</tbody>
+      </table>
+  );
 }
 
 export default Board;
